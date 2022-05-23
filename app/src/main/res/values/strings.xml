@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">UserSP</string>
+    <string name="content_description_user_photo">User image</string>
+</resources>
