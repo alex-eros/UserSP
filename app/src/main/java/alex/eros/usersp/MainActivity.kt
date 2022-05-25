@@ -1,11 +1,17 @@
 package alex.eros.usersp
 
 import alex.eros.usersp.databinding.ActivityMainBinding
+import android.content.Context
+import android.content.DialogInterface
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
+import android.view.LayoutInflater
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.textfield.TextInputEditText
 
 class MainActivity : AppCompatActivity(),OnClickListener {
 
@@ -19,6 +25,34 @@ class MainActivity : AppCompatActivity(),OnClickListener {
         setContentView(binding.root)
         userAdapter = UserAdapter(getUsers(),this)
         linearLayoutManager = LinearLayoutManager(this)
+
+        val preferences = getPreferences(Context.MODE_PRIVATE)
+        /*Se crea un instancia de SP*/
+
+        val isFirstTime = preferences.getBoolean(getString(R.string.sp_first_time),true)
+        /*Así se recupera un valor almacenado en SP*/
+
+        Log.i("SP","${getString(R.string.sp_first_time)}= $isFirstTime")
+        Log.i("SP","${getString(R.string.sp_username)}= ${preferences.getString(getString(R.string.sp_username),"NA")}")
+        if(isFirstTime) {
+            val dialogView = layoutInflater.inflate(R.layout.dialog_register,null)
+            MaterialAlertDialogBuilder(this)
+                .setTitle(R.string.dialog_tittle)
+                .setView(dialogView)
+                .setPositiveButton(R.string.dialog_confirm) { dialogInterface, i ->
+                    val username = dialogView.findViewById<TextInputEditText>(R.id.editText_UserName).text.toString()
+                    with(preferences.edit()) {
+                        putBoolean(getString(R.string.sp_first_time), false)
+                        putString(getString(R.string.sp_username), username)
+                            .apply()
+                    }
+                    Toast.makeText(this, R.string.succes, Toast.LENGTH_SHORT).show()
+                }
+                .show()
+        }else{
+            val username = preferences.getString(getString(R.string.sp_username),getString(R.string.hint_userName))
+            Toast.makeText(this,"Welcome $username",Toast.LENGTH_SHORT).show()
+        }
 
         binding.RVUSER.apply {
             setHasFixedSize(true)
