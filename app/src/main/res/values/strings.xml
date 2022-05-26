@@ -9,4 +9,6 @@
     <string name="helper_UserName">Required</string>
     <string name="sp_username">username</string>
     <string name="succes">SUCCES</string>
+    <string name="invited_user">INVITED</string>
+    <string name="welcome">WELCOME GUEST</string>
 </resources>

@@ -2,11 +2,9 @@ package alex.eros.usersp
 
 import alex.eros.usersp.databinding.ActivityMainBinding
 import android.content.Context
-import android.content.DialogInterface
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -39,7 +37,7 @@ class MainActivity : AppCompatActivity(),OnClickListener {
             MaterialAlertDialogBuilder(this)
                 .setTitle(R.string.dialog_tittle)
                 .setView(dialogView)
-                .setPositiveButton(R.string.dialog_confirm) { dialogInterface, i ->
+                .setPositiveButton(R.string.dialog_confirm) { _, _ ->
                     val username = dialogView.findViewById<TextInputEditText>(R.id.editText_UserName).text.toString()
                     with(preferences.edit()) {
                         putBoolean(getString(R.string.sp_first_time), false)
@@ -48,8 +46,17 @@ class MainActivity : AppCompatActivity(),OnClickListener {
                     }
                     Toast.makeText(this, R.string.succes, Toast.LENGTH_SHORT).show()
                 }
+                .setNeutralButton(R.string.invited_user){ dialogInterface, i ->
+                    with(preferences.edit()){
+                        putBoolean(getString(R.string.sp_first_time),true)
+                        putString(getString(R.string.sp_username),getString(R.string.welcome))
+                            .apply()
+                    }
+                    Toast.makeText(this, R.string.welcome, Toast.LENGTH_SHORT).show()
+                }
                 .show()
-        }else{
+        }
+        else{
             val username = preferences.getString(getString(R.string.sp_username),getString(R.string.hint_userName))
             Toast.makeText(this,"Welcome $username",Toast.LENGTH_SHORT).show()
         }

@@ -1,6 +1,6 @@
 package alex.eros.usersp
 
-import alex.eros.usersp.databinding.UserListBinding
+import alex.eros.usersp.databinding.UserListCardviewBinding
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
@@ -15,7 +15,7 @@ class UserAdapter(private val users:List<User>, private val listener:OnClickList
     private lateinit var context:Context
 
     inner class ViewHolder(view:View):RecyclerView.ViewHolder(view){
-        val binding = UserListBinding.bind(view)
+        val binding = UserListCardviewBinding.bind(view)
 
         fun setListener(user:User,position: Int){
             binding.root.setOnClickListener{listener.Onclick(user,position)}
@@ -25,12 +25,12 @@ class UserAdapter(private val users:List<User>, private val listener:OnClickList
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         context = parent.context
-        val view = LayoutInflater.from(context).inflate(R.layout.user_list,parent,false)
+        val view = LayoutInflater.from(context).inflate(R.layout.user_list_cardview,parent,false)
         return ViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val user =users.get(position)
+        val user = users[position]
 
         with(holder){
             setListener(user,position)
